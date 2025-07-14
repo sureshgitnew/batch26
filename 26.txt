@@ -1,0 +1,25 @@
+---
+- name: Perform multiple tasks on Amazon Linux
+  hosts: all_hosts
+  become: yes
+  tasks:
+    - name: Update all packages to the latest version
+      yum:
+        name: '*'
+        state: latest
+
+    - name: Install the latest version of httpd
+      yum:
+        name: httpd
+        state: latest
+
+    - name: Create a simple HTML file
+      copy:
+        dest: /var/www/html/index.html
+        content: "<html><body><h1>Welcome to my website!</h1></body></html>"
+
+    - name: Ensure httpd is started and enabled on boot
+      service:
+        name: httpd
+        state: started
+        enabled: yes
